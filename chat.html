@@ -40,6 +40,8 @@
             display: flex;
             flex-direction: column;
             flex-shrink: 0; 
+            transition: transform 0.3s ease-in-out; /* Adicionado para animação */
+            z-index: 1000; /* Garante que fique visível */
         }
 
         .sidebar-header {
@@ -399,11 +401,112 @@
             scrollbar-width: thin; 
             scrollbar-color: rgba(0, 30, 94, 0.5) transparent; 
         }
+        
+        /* Classe para mostrar a sidebar em telas pequenas */
+        .sidebar.sidebar-visible {
+            transform: translateX(0); 
+        }
+
+        /* Estilo para o fundo escurecido (Overlay) */
+        .overlay {
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 999; 
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .overlay.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .menu-toggle-button {
+            display: none; 
+            background: none;
+            border: none;
+            color: #528CFF; 
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 15px; 
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                position: fixed; 
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%); 
+                box-shadow: 2px 0 5px rgba(0,0,0,0.2); 
+            }
+             .sidebar.sidebar-visible { /* Garante que a regra de visibilidade funcione */
+                transform: translateX(0);
+             }
+
+
+            .menu-toggle-button {
+                display: block; 
+            }
+
+            .chat-main {
+                padding: 15px; 
+            }
+
+            .chat-header {
+                padding-bottom: 15px; 
+            }
+             .chat-header .icon { 
+                width: 50px;
+                height: 50px;
+                font-size: 28px;
+             }
+             .chat-header h2 { font-size: 22px; } 
+             .chat-header p { font-size: 14px; } 
+
+            .chat-content-wrapper {
+                 margin-top: 15px; 
+                 border-radius: 20px; 
+            }
+
+            .chat-messages {
+                padding: 20px 20px 0 20px; 
+            }
+            .message {
+                font-size: 16px; 
+            }
+
+             .chat-input-area {
+                 padding: 15px 20px 20px 20px; 
+             }
+             .chat-input-area textarea {
+                 padding: 12px 18px; 
+                 font-size: 14px;
+             }
+              .chat-input-area button { 
+                 width: 45px;
+                 height: 45px;
+                 font-size: 18px;
+             }
+             
+             #scroll-down-button { 
+                 bottom: 75px;
+                 right: 30px;
+                 width: 35px;
+                 height: 35px;
+                 font-size: 16px;
+             }
+        }
 
     </style>
 </head>
 <body>
-
+    <div class="overlay"></div> 
     <div class="chat-container">
         
         <nav class="sidebar">
@@ -427,6 +530,9 @@
 
         <main class="chat-main">
             <header class="chat-header">
+                <button class="menu-toggle-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="icon"><i class="fa-solid fa-robot"></i></div>
                 <div>
                     <h2>Assistente PsicoConnect</h2>
@@ -466,6 +572,9 @@
             const messageInput = document.getElementById('message-input'); 
             const sendButton = document.getElementById('send-button');
             const scrollDownButton = document.getElementById('scroll-down-button'); 
+            const menuToggleButton = document.querySelector('.menu-toggle-button'); 
+            const sidebar = document.querySelector('.sidebar'); 
+            const overlay = document.querySelector('.overlay'); 
 
             let typingIndicatorElement = null; 
 
@@ -493,6 +602,21 @@
             scrollDownButton.addEventListener('click', () => {
                 scrollToBottom(true); 
             });
+
+            if (menuToggleButton && sidebar) {
+                menuToggleButton.addEventListener('click', () => {
+                    sidebar.classList.toggle('sidebar-visible');
+                    if (overlay) { 
+                        overlay.classList.toggle('visible');
+                    }
+                });
+            }
+             if (overlay) {
+                 overlay.addEventListener('click', () => {
+                     sidebar.classList.remove('sidebar-visible');
+                     overlay.classList.remove('visible');
+                 });
+             }
 
             function sendMessage() {
                 const text = messageInput.value.trim(); 
