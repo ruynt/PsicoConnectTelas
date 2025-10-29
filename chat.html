@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsicoConnect Chat</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            background-color: #f0f2f5; 
+        }
+
+        .chat-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            background-color: #ffffff;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-image: linear-gradient(to right, #1C4BB3, #3F7AFD); 
+            color: white;
+            padding: 24px 0; 
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0; 
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 0 24px; 
+        }
+
+        .sidebar-header .logo {
+            width: 110px;   
+            height: 110px; 
+            border-radius: 50%;
+            margin-right: 0px; 
+            overflow: hidden;
+        }
+
+        .sidebar-header .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        .sidebar-header h1 {
+            font-size: 33px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 0.9; 
+        }
+
+        .sidebar-nav {
+            flex-grow: 1; 
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 18px 24px; 
+            text-decoration: none;
+            color: #ffffff;
+            border-radius: 0; 
+            font-size: 20px; 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.0;
+            transition: background-color 0.3s ease; 
+        }
+
+        .sidebar-nav a i {
+            margin-right: 30px; 
+            margin-left: -11px;
+            width: 20px;
+            text-align: center;
+            font-size: 32px;
+        }
+        
+        .sidebar-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: #001E5E;
+        }
+
+        .sidebar-footer {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-footer a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            padding: 14px 24px; 
+            text-decoration: none;
+            color: #ffffff;
+            border-radius: 0; 
+            font-size: 20px;
+            transition: background-color 0.3s ease; 
+        }
+        .sidebar-footer a i {
+            width: 20px;
+            text-align: center;
+            font-size: 32px;
+            margin-right: 30px; 
+            margin-left: -12px;
+        }
+         .sidebar-footer a:hover {
+            background-color: #001E5E;
+        }
+
+        .chat-main {
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            padding: 24px 32px;
+            position: relative; 
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 24px; 
+            flex-shrink: 0; 
+        }
+
+        .chat-header .icon {
+            font-size: 41px;
+            color: #ffffff;
+            background-color: #528CFF;
+            border-radius: 50%;
+            margin-right: 16px;
+            width: 80px;   
+            height: 80px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .chat-header h2 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #001E5E;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .chat-header p {
+            font-size: 20px;
+            color: #000000;
+            font-family: 'inter', sans-serif;
+            padding-left: 10px;
+        }
+
+        .chat-content-wrapper {
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            background-color: #CDE3FE; 
+            margin-top: 50px; 
+            border-radius: 30px; 
+            
+            max-width: 1600px; 
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            
+            overflow: hidden; 
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08); 
+        }
+
+        .chat-messages {
+            flex-grow: 1; 
+            padding: 32px 32px 0 32px; 
+            overflow-y: auto; 
+            display: flex;
+            flex-direction: column;
+            gap: 12px; 
+        }
+
+        .message {
+            padding: 14px 20px;
+            border-radius: 18px;
+            max-width: 60%;
+            line-height: 1.4;
+            font-size: 19px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            overflow-wrap: break-word; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        .message.bot {
+            background-color: #ffffff; 
+            color: #333;
+            align-self: flex-start; 
+            border-bottom-left-radius: 4px;
+        }
+        .message.bot .timestamp { 
+             align-self: flex-end;
+        }
+
+        .message.user {
+            background-color: #528CFF; 
+            color: #ffffff;
+            align-self: flex-end; 
+            border-bottom-right-radius: 4px;
+        }
+        .message.user .timestamp { 
+             align-self: flex-end;
+             color: #e0e0e0;
+        }
+
+        .chat-input-area {
+            display: flex;
+            background-color: transparent; 
+            flex-shrink: 0; 
+            padding: 24px 32px 32px 32px; 
+            align-items: flex-end; 
+        }
+
+        .chat-input-area textarea {
+            flex-grow: 1;
+            border: none;
+            background-color: #ffffff; 
+            padding: 16px 24px;
+            border-radius: 30px; 
+            font-size: 15px;
+            line-height: 1.4; 
+            outline: none;
+            resize: none; 
+            font-family: 'Inter', sans-serif; 
+            max-height: 100px; 
+            overflow-y: auto; 
+            margin-right: 16px; 
+            box-sizing: border-box; 
+        }
+
+        .chat-input-area textarea::placeholder {
+            color: #999;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chat-input-area button {
+            background-color: #528CFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            flex-shrink: 0; 
+        }
+        
+        .chat-input-area button:hover {
+            background-color: #001E5E;
+        }
+
+        .sidebar-nav a:active,
+        .sidebar-footer a:active{
+            background-color:transparent ;
+        }
+        
+        .chat-input-area button:active {
+            background-color: #528CFF; 
+            transform: scale(0.98); 
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px; 
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            margin-bottom: 12px; 
+            align-self: flex-start; 
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #999;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: bounce 1.3s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: -1.1s; }
+        .typing-indicator span:nth-child(3) { animation-delay: -0.9s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+
+        #scroll-down-button {
+            position: absolute; 
+            bottom: 90px; 
+            right: 50px; 
+            background-color: #528CFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 10; 
+        }
+        #scroll-down-button.hidden {
+            opacity: 0;
+            transform: translateY(10px); 
+            pointer-events: none; 
+        }
+
+        .chat-messages::-webkit-scrollbar,
+        .chat-input-area textarea::-webkit-scrollbar {
+            width: 8px; 
+        }
+
+        .chat-messages::-webkit-scrollbar-track,
+        .chat-input-area textarea::-webkit-scrollbar-track {
+            background: transparent; 
+            border-radius: 4px; 
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb,
+        .chat-input-area textarea::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 30, 94, 0.3); 
+            border-radius: 4px; 
+            border: 2px solid transparent; 
+            background-clip: padding-box; 
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover,
+        .chat-input-area textarea::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 30, 94, 0.5); 
+        }
+        
+        .chat-messages::-webkit-scrollbar-button,
+        .chat-input-area textarea::-webkit-scrollbar-button {
+            width: 0;
+            height: 0;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+            display: none !important; 
+        }
+        .chat-messages::-webkit-scrollbar-button:vertical,
+        .chat-input-area textarea::-webkit-scrollbar-button:vertical {
+             display: none !important;
+        }
+         .chat-messages::-webkit-scrollbar-button:horizontal,
+        .chat-input-area textarea::-webkit-scrollbar-button:horizontal {
+             display: none !important;
+        }
+
+        .chat-messages,
+        .chat-input-area textarea {
+            scrollbar-width: thin; 
+            scrollbar-color: rgba(0, 30, 94, 0.5) transparent; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/logo.png" alt="Logo PsicoConnect">
+                </div>
+                <h1>Psico
+                    Connect</h1>
+            </div>
+            <div class="sidebar-nav">
+                <a href="#"><i class="fa-solid fa-home"></i> Início</a>
+                <a href="#"><i class="fa-solid fa-calendar-alt"></i> Minhas Consultas</a>
+                <a href="#"><i class="fa-solid fa-book-open"></i> Conteúdos Psicoeducacionais</a>
+                <a href="#"><i class="fa-solid fa-comments"></i> Chat</a> 
+            </div>
+            <div class="sidebar-footer">
+                <a href="#"><i class="fa-solid fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </nav>
+
+        <main class="chat-main">
+            <header class="chat-header">
+                <div class="icon"><i class="fa-solid fa-robot"></i></div>
+                <div>
+                    <h2>Assistente PsicoConnect</h2>
+                    <p>Como posso te ajudar hoje?</p>
+                </div>
+            </header>
+
+            <div class="chat-content-wrapper"> 
+    
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot">
+                        <div>Olá! Sou o assistente virtual da PsicoConnect. Estou aqui para ajudar com agendamentos ou tirar dúvidas.</div>
+                        <span class="timestamp"></span> 
+                    </div>
+                </div>
+    
+                <footer class="chat-input-area">
+                    <textarea id="message-input" placeholder="Digite sua mensagem aqui..." rows="1"></textarea> 
+                    <button id="send-button">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </footer>
+
+            </div> 
+
+             <button id="scroll-down-button" class="hidden">
+                 <i class="fa-solid fa-arrow-down"></i>
+             </button>
+
+         </main>
+        
+    </div> 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageInput = document.getElementById('message-input'); 
+            const sendButton = document.getElementById('send-button');
+            const scrollDownButton = document.getElementById('scroll-down-button'); 
+
+            let typingIndicatorElement = null; 
+
+            sendButton.addEventListener('click', sendMessage);
+            
+            messageInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault(); 
+                    sendMessage();
+                }
+            });
+
+            messageInput.addEventListener('input', () => {
+                messageInput.style.height = 'auto'; 
+                const newHeight = Math.min(messageInput.scrollHeight + 2, 100); 
+                messageInput.style.height = newHeight + 'px'; 
+            });
+
+            chatMessages.addEventListener('scroll', () => {
+                const threshold = 50; 
+                const isNearBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < threshold;
+                scrollDownButton.classList.toggle('hidden', isNearBottom); 
+            });
+
+            scrollDownButton.addEventListener('click', () => {
+                scrollToBottom(true); 
+            });
+
+            function sendMessage() {
+                const text = messageInput.value.trim(); 
+                if (text === '') { return; }
+
+                displayMessage(text, 'user');
+                messageInput.value = '';
+                setTimeout(() => { messageInput.style.height = 'auto'; }, 0); 
+
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    getBotResponse(text); 
+                }, 1500); 
+            }
+
+            function displayMessage(text, sender) {
+                const messageWrapper = document.createElement('div'); 
+                messageWrapper.classList.add('message', sender);
+
+                const messageTextElement = document.createElement('div'); 
+
+                if (sender === 'bot') {
+                    messageTextElement.innerHTML = linkify(text); 
+                } else {
+                    messageTextElement.textContent = text; 
+                }
+
+                const timestampElement = document.createElement('span');
+                timestampElement.classList.add('timestamp');
+                const now = new Date();
+                timestampElement.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                messageWrapper.appendChild(messageTextElement); 
+                messageWrapper.appendChild(timestampElement);
+
+                if (typingIndicatorElement) {
+                    chatMessages.insertBefore(messageWrapper, typingIndicatorElement);
+                } else {
+                    chatMessages.appendChild(messageWrapper);
+                }
+                
+                scrollToBottom(false); 
+            }
+
+            function getBotResponse(userText) {
+                hideTypingIndicator();
+                const response = "Entendido. Estou processando sua solicitação... (Esta é uma resposta automática de teste com um link: www.google.com)";
+                displayMessage(response, 'bot');
+            }
+
+            function showTypingIndicator() {
+                if (!typingIndicatorElement) {
+                    typingIndicatorElement = document.createElement('div');
+                    typingIndicatorElement.classList.add('typing-indicator');
+                    typingIndicatorElement.innerHTML = '<span></span><span></span><span></span>';
+                    chatMessages.appendChild(typingIndicatorElement);
+                    scrollToBottom(false); 
+                }
+            }
+            function hideTypingIndicator() {
+                if (typingIndicatorElement) {
+                    chatMessages.removeChild(typingIndicatorElement);
+                    typingIndicatorElement = null;
+                }
+            }
+            
+            function linkify(text) {
+                const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])|(\bwww\.[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                return text.replace(urlRegex, function(url) {
+                    let fullUrl = url;
+                    if (!url.match(/^https?:\/\//i)) { 
+                        fullUrl = 'http://' + url; 
+                    }
+                    return '<a href="' + fullUrl + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+                });
+            }
+
+            function scrollToBottom(smooth = false) {
+                 setTimeout(() => { 
+                    chatMessages.scrollTo({
+                        top: chatMessages.scrollHeight,
+                        behavior: smooth ? 'smooth' : 'auto' 
+                    });
+                 }, 0);
+                 scrollDownButton.classList.add('hidden');
+            }
+            
+            const initialTimestamp = document.querySelector('.chat-messages .message.bot .timestamp');
+            if (initialTimestamp && !initialTimestamp.textContent) {
+                 const now = new Date();
+                 initialTimestamp.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            scrollToBottom(false); 
+
+        });
+    </script>
+
+</body>
+</html>
