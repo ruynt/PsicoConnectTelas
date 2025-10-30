@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar - PsicoConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Montserrat:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body, html {
+            min-height: 100%;
+            overflow: auto; 
+            background-color: #f0f4f8; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0; 
+        }
+
+        .login-container {
+            display: flex;
+            max-width: 900px;
+            width: 90%;
+            min-height: 550px; 
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden; 
+        }
+
+        .login-panel-left {
+            flex: 1; 
+            background-image: linear-gradient(to right, #1C4BB3, #3F7AFD);
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: -200px;
+        }
+
+        .logo-img {
+            width: 130px;
+            height: 130px;
+            margin-right: -20px;
+            margin-left: -20px;
+        }
+
+        .logo-container h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 35px;
+            font-weight: 700;
+            line-height: 85%; 
+            margin-top: 10px;
+        }
+
+        .tagline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700; 
+            line-height: 115%; 
+        }
+
+        .login-panel-right {
+            flex: 1.2; 
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            background-color: #ffffff;
+        }
+        
+        .login-panel-right .logo-container {
+            display: none; 
+        }
+
+        .login-panel-right h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #001E5E; 
+            margin-bottom: 25px;
+        }
+
+        #cadastro-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cadastro-form label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        #cadastro-form input[type="text"],
+        #cadastro-form input[type="email"],
+        #cadastro-form input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            margin-bottom: 3px;
+            font-size: 15px;
+            outline-color: #528CFF;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        
+        #cadastro-form input.error {
+            border-color: #D93025; 
+            background-color: #fdefeee8; 
+        }
+        
+        .error-message {
+            color: #D93025;
+            font-size: 12px;
+            font-weight: 500;
+            display: block;
+            height: 18px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .role-selector input[type="radio"] {
+            display: none;
+        }
+        
+        .radio-label::before {
+            content: '';
+            width: 18px;
+            height: 18px;
+            border: 2px solid #dcdcdc;
+            border-radius: 50%;
+            margin-right: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .role-selector input[type="radio"]:checked + .radio-label::before {
+            border-color: #528CFF;
+            background-color: #528CFF;
+            box-shadow: 0 0 0 3px white inset; 
+        }
+
+        .hidden-field {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+        }
+        .hidden-field.visible {
+            display: flex;
+        }
+        
+        .btn-primary {
+            background-color: #528CFF;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif; 
+            font-weight: 700; 
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.05s ease;
+            margin-top: 15px;
+        }
+        .btn-primary:hover {
+            background-color: #001E5E;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #aaa;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .separator:not(:empty)::before { margin-right: .5em; }
+        .separator:not(:empty)::after { margin-left: .5em; }
+        
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #001E5E;
+            border: 1px solid #001E5E;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif; 
+            font-weight: 500; 
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.2s, color 0.2s, transform 0.05s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #001E5E;
+            color: #ffffff;
+        }
+        
+        .btn-primary:active,
+        .btn-secondary:active {
+            transform: scale(0.98); 
+        }
+
+        @media (max-width: 768px) {
+            body, html {
+                align-items: flex-start;
+                height: auto;
+            }
+
+            .login-container {
+                flex-direction: column;
+                width: 90%; 
+                max-width: 450px; 
+                height: auto; 
+                min-height: 0; 
+                border-radius: 20px; 
+            }
+            .login-panel-left {
+                display: none; 
+            }
+            .tagline {
+                display: none;
+            }
+
+            .login-panel-right {
+                flex: 1;
+                padding: 40px 20px;
+                justify-content: center; 
+            }
+             .login-panel-right h2 { 
+                 font-size: 28px; 
+                 text-align: center; 
+            }
+            
+            .login-panel-right .logo-container { 
+                display: none; 
+            }
+
+            .role-selector {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-panel-left">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="Logo PsicoConnect" class="logo-img">
+                <h1>Psico
+                    Connect</h1>
+            </div>
+            <p class="tagline">
+                Um espaço<br>seguro para sua<br>saúde mental.
+            </p>
+        </div>
+
+        <div class="login-panel-right">
+             <div class="logo-container">
+                <img src="images/logo.png" alt="Logo PsicoConnect" class="logo-img">
+                <h1>PsicoConnect</h1>
+             </div>
+
+            <h2>Criar Conta</h2>
+            <form id="cadastro-form" novalidate>
+                
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" required>
+                <small id="nome-error" class="error-message"></small>
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <small id="email-error" class="error-message"></small>
+
+                <label for="senha">Senha (mín. 8 caracteres)</label>
+                <input type="password" id="senha" name="senha" required>
+                <small id="senha-error" class="error-message"></small>
+
+                <label for="confirmar-senha">Confirmar Senha</label>
+                <input type="password" id="confirmar-senha" name="confirmar-senha" required>
+                <small id="confirmar-senha-error" class="error-message"></small>
+
+                <label>Você é:</label>
+                <div class="role-selector">
+                    <input type="radio" id="role-paciente" name="role" value="paciente" checked>
+                    <label for="role-paciente" class="radio-label">Paciente</label>
+                    
+                    <input type="radio" id="role-psicologo" name="role" value="psicologo">
+                    <label for="role-psicologo" class="radio-label">Psicólogo</label>
+                </div>
+
+                <div id="crp-field" class="hidden-field">
+                    <label for="crp">CRP (Conselho Regional de Psicologia)</label>
+                    <input type="text" id="crp" name="crp">
+                    <small id="crp-error" class="error-message"></small>
+                </div>
+
+                <button type="submit" class="btn-primary">Cadastrar</button>
+            </form>
+
+            <div class="separator">ou</div>
+
+            <a href="login.html" class="btn-secondary">Já tenho uma conta</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cadastroForm = document.getElementById('cadastro-form');
+            const nomeInput = document.getElementById('nome');
+            const emailInput = document.getElementById('email');
+            const senhaInput = document.getElementById('senha');
+            const confirmarSenhaInput = document.getElementById('confirmar-senha');
+            const rolePsicologo = document.getElementById('role-psicologo');
+            const rolePaciente = document.getElementById('role-paciente');
+            const crpField = document.getElementById('crp-field');
+            const crpInput = document.getElementById('crp');
+
+            const nomeError = document.getElementById('nome-error');
+            const emailError = document.getElementById('email-error');
+            const senhaError = document.getElementById('senha-error');
+            const confirmarSenhaError = document.getElementById('confirmar-senha-error');
+            const crpError = document.getElementById('crp-error');
+
+            function isValidEmail(email) {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return regex.test(email);
+            }
+
+            function isValidCRP(crp) {
+                const regex = /^\d{2}\/\d{1,10}$/;
+                return regex.test(crp);
+            }
+
+            rolePsicologo.addEventListener('change', () => {
+                if (rolePsicologo.checked) {
+                    crpField.classList.add('visible');
+                }
+            });
+            
+            rolePaciente.addEventListener('change', () => {
+                if (rolePaciente.checked) {
+                    crpField.classList.remove('visible');
+                    crpError.textContent = '';
+                    crpInput.classList.remove('error');
+                }
+            });
+
+            cadastroForm.addEventListener('submit', (event) => {
+                event.preventDefault(); 
+                
+                let isValid = true;
+                
+                nomeError.textContent = '';
+                nomeInput.classList.remove('error');
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+                senhaError.textContent = '';
+                senhaInput.classList.remove('error');
+                confirmarSenhaError.textContent = '';
+                confirmarSenhaInput.classList.remove('error');
+                crpError.textContent = '';
+                crpInput.classList.remove('error');
+
+                const nome = nomeInput.value.trim();
+                const email = emailInput.value.trim();
+                const senha = senhaInput.value.trim();
+                const confirmarSenha = confirmarSenhaInput.value.trim();
+                const crp = crpInput.value.trim();
+
+                if (nome === '') {
+                    nomeError.textContent = 'Por favor, preencha seu nome.';
+                    nomeInput.classList.add('error');
+                    isValid = false;
+                }
+
+                if (email === '') {
+                    emailError.textContent = 'Por favor, preencha o campo de email.';
+                    emailInput.classList.add('error');
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    emailError.textContent = 'Por favor, insira um email válido (ex: email@dominio.com).';
+                    emailInput.classList.add('error');
+                    isValid = false;
+                }
+                
+                if (senha === '') {
+                    senhaError.textContent = 'Por favor, preencha o campo de senha.';
+                    senhaInput.classList.add('error');
+                    isValid = false;
+                } else if (senha.length < 8) {
+                    senhaError.textContent = 'A senha deve ter no mínimo 8 caracteres.';
+                    senhaInput.classList.add('error');
+                    isValid = false;
+                }
+                
+                if (confirmarSenha === '') {
+                    confirmarSenhaError.textContent = 'Por favor, confirme sua senha.';
+                    confirmarSenhaInput.classList.add('error');
+                    isValid = false;
+                } else if (senha !== confirmarSenha) {
+                    confirmarSenhaError.textContent = 'As senhas não coincidem.';
+                    confirmarSenhaInput.classList.add('error');
+                    isValid = false;
+                }
+                
+                if (rolePsicologo.checked) {
+                    if (crp === '') {
+                        crpError.textContent = 'Por favor, preencha seu CRP.';
+                        crpInput.classList.add('error');
+                        isValid = false;
+                    } else if (!isValidCRP(crp)) {
+                        crpError.textContent = 'Formato de CRP inválido. Use (ex: 06/12345).';
+                        crpInput.classList.add('error');
+                        isValid = false;
+                    }
+                }
+                
+                if (isValid) {
+                    alert('Cadastro simulado com sucesso! Redirecionando para o login...');
+                    window.location.href = 'login.html'; 
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar - PsicoConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Montserrat:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: auto; 
+            background-color: #f0f4f8; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0; 
+        }
+
+        .login-container {
+            display: flex;
+            width: 900px; 
+            max-width: 90%;
+            min-height: 550px; 
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden; 
+        }
+
+        .login-panel-left {
+            flex: 1; 
+            background-image: linear-gradient(to right, #1C4BB3, #3F7AFD);
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: -200px;
+        }
+
+        .logo-img {
+            width: 130px;
+            height: 130px;
+            margin-right: -20px;
+            margin-left: -20px;
+        }
+
+        .logo-container h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 35px;
+            font-weight: 700;
+            line-height: 85%; 
+            margin-top: 10px;
+        }
+
+        .tagline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700; 
+            line-height: 115%; 
+        }
+
+        .login-panel-right {
+            flex: 1.2; 
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            background-color: #ffffff;
+        }
+        
+        .login-panel-right .logo-container {
+            display: none; 
+        }
+
+        .login-panel-right h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #001E5E; 
+            margin-bottom: 30px;
+        }
+
+        #login-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #login-form label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        #login-form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            margin-bottom: 3px;
+            font-size: 15px;
+            outline-color: #528CFF;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        
+        #login-form input.error {
+            border-color: #D93025; 
+            background-color: #fdefeee8; 
+        }
+        
+        .error-message {
+            color: #D93025;
+            font-size: 12px;
+            font-weight: 500;
+            display: block;
+            height: 18px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .forgot-password {
+            font-size: 13px;
+            color: #001E5E;
+            text-decoration: none;
+            margin-bottom: 25px;
+            font-weight: 600;
+            transition: color 0.2s, transform 0.05s ease;
+        }
+        .forgot-password:hover {
+            color: #528CFF;
+        }
+        
+        .btn-primary {
+            background-color: #528CFF;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif; 
+            font-weight: 700; 
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.05s ease;
+        }
+        .btn-primary:hover {
+            background-color: #001E5E;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #aaa;
+            margin: 25px 0;
+            font-size: 13px;
+        }
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .separator:not(:empty)::before { margin-right: .5em; }
+        .separator:not(:empty)::after { margin-left: .5em; }
+        
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #001E5E;
+            border: 1px solid #001E5E;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif; 
+            font-weight: 500; 
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.2s, color 0.2s, transform 0.05s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #001E5E;
+            color: #ffffff;
+        }
+        
+        .btn-primary:active,
+        .btn-secondary:active {
+            transform: scale(0.98); 
+        }
+        
+        .forgot-password:active {
+            transform: scale(0.98);
+            color: #001E5E;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                width: 90%; 
+                max-width: 450px; 
+                height: auto; 
+                min-height: 0; 
+                border-radius: 20px; 
+            }
+            .login-panel-left {
+                display: none; 
+            }
+            .tagline {
+                display: none;
+            }
+
+            .login-panel-right {
+                flex: 1;
+                padding: 40px 30px; 
+                justify-content: center; 
+            }
+             .login-panel-right h2 { 
+                 font-size: 28px; 
+                 text-align: center; 
+            }
+            
+            .login-panel-right .logo-container { 
+                display: none; 
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-panel-left">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="Logo PsicoConnect" class="logo-img">
+                <h1>Psico
+                    Connect</h1>
+            </div>
+            <p class="tagline">
+                Um espaço<br>seguro para sua<br>saúde mental.
+            </p>
+        </div>
+
+        <div class="login-panel-right">
+             <div class="logo-container">
+                <img src="images/logo.png" alt="Logo PsicoConnect" class="logo-img">
+                <h1>PsicoConnect</h1>
+            </div>
+
+            <h2>Entrar</h2>
+            <form id="login-form" novalidate>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <small id="email-error" class="error-message"></small>
+
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" required>
+                <small id="senha-error" class="error-message"></small>
+
+                <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+
+            <div class="separator">ou</div>
+
+            <a href="cadastro.html" class="btn-secondary">Cadastrar-se</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const emailInput = document.getElementById('email');
+            const senhaInput = document.getElementById('senha');
+            const emailError = document.getElementById('email-error');
+            const senhaError = document.getElementById('senha-error');
+
+            function isValidEmail(email) {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return regex.test(email);
+            }
+
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault(); 
+                
+                let isValid = true;
+                
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+                senhaError.textContent = '';
+                senhaInput.classList.remove('error');
+
+                const email = emailInput.value.trim();
+                const senha = senhaInput.value.trim();
+
+                if (email === '') {
+                    emailError.textContent = 'Por favor, preencha o campo de email.';
+                    emailInput.classList.add('error');
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    emailError.textContent = 'Por favor, insira um email válido (ex: email@dominio.com).';
+                    emailInput.classList.add('error');
+                    isValid = false;
+                }
+                
+                if (senha === '') {
+                    senhaError.textContent = 'Por favor, preencha o campo de senha.';
+                    senhaInput.classList.add('error');
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    console.log('Tentativa de login com:', email);
+                    alert('Login simulado com sucesso! Redirecionando para o chat...');
+                    window.location.href = 'chat.html'; 
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
