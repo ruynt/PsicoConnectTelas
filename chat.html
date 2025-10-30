@@ -332,8 +332,8 @@
 
         #scroll-down-button {
             position: absolute; 
-            bottom: 100px; 
-            right: 39px; 
+            bottom: 85px;  /* Ajustado */
+            right: 30px;   /* Ajustado */
             background-color: #528CFF;
             color: white;
             border: none;
@@ -491,7 +491,7 @@
                  height: 45px;
                  font-size: 18px;
              }
-             
+             /* A regra específica de posicionamento para #scroll-down-button foi REMOVIDA daqui */
         }
 
     </style>
@@ -653,11 +653,37 @@
                 scrollToBottom(false); 
             }
 
-            function getBotResponse(userText) {
-                hideTypingIndicator();
-                const response = "Entendido. Estou processando sua solicitação... (Esta é uma resposta automática de teste com um link: www.google.com)";
-                displayMessage(response, 'bot');
-            }
+            async function getBotResponse(userText) {
+               const backendUrl = 'http://localhost:8000/api/chat'; 
+
+               try {
+                   const response = await fetch(backendUrl, {
+                       method: 'POST', 
+                       headers: {
+                           'Content-Type': 'application/json', 
+                       },
+                       body: JSON.stringify({ message: userText }) 
+                   });
+
+                   if (!response.ok) {
+                       console.error("Erro na API:", response.statusText);
+                       displayMessage("Desculpe, tive um problema ao processar sua mensagem. Tente novamente.", 'bot');
+                       hideTypingIndicator(); 
+                       return; 
+                   }
+
+                   const data = await response.json();
+                   const botReply = data.reply || "Não entendi bem o que você disse."; 
+
+                   hideTypingIndicator(); 
+                   displayMessage(botReply, 'bot'); 
+
+               } catch (error) {
+                   console.error("Erro ao conectar com o backend:", error);
+                   displayMessage("Desculpe, não consegui me conectar. Verifique sua conexão.", 'bot');
+                   hideTypingIndicator(); 
+               }
+           }
 
             function showTypingIndicator() {
                 if (!typingIndicatorElement) {
